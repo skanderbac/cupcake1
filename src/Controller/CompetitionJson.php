@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompetitionJson extends AbstractController
 {
     /**
-     * @Route("/comp", name="res")
+     * @Route("/competition", name="refsfsfs")
      */
     public function AfiAction()
     {
@@ -29,24 +29,45 @@ class CompetitionJson extends AbstractController
         return new JsonResponse($formatted);
     }
     /**
-     * @Route("/comp/add", name="quadd")
+     * @Route("/competition/add", name="quazfdd")
      */
     public function adAction(Request $request,NormalizerInterface $Normalizer)
     {
+        $data = json_decode($request->getContent(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return null;
+        }
+
+        if ($data === null) {
+            return $request;
+        }
+
+        $request->request->replace($data);
+
         $em = $this->getDoctrine()->getManager();
         $comp = new Competition();
-        $comp->setNomCompetition($request->get('nom_competition'));
-        $rest=substr($request->get('date_debut'), 0, 20);
-        $rest1=substr($request->get('date_debut'), 30, 34);
+        $comp->setNomCompetition($request->get('nomCompetition'));
+
+
+        $rest=substr($request->get('dateDebut'), 0, 20);
+        $rest1=substr($request->get('dateDebut'), 30, 34);
         $res=$rest.$rest1;
         try {
             $date = new \DateTime($res);
             $comp->setDateDebut($date);
+            $comp->setDateFin($date);
 
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {}
 
-        }
+        $restt=substr($request->get('dateFin'), 0, 20);
+        $rest11=substr($request->get('dateFin'), 30, 34);
+        $ress=$restt.$rest11;
+        try {
+            $datee = new \DateTime($ress);
+            $comp->setDateFin($datee);
 
+        } catch (\Exception $e) {}
 
         $em->persist($comp);
         $em->flush();
@@ -54,7 +75,7 @@ class CompetitionJson extends AbstractController
         return new Response(json_encode($jsonContent));
     }
     /**
-     * @Route("/comp/del/{id_competition}", name="cvvd")
+     * @Route("/competition/delete/{id_competition}", name="cvssfvd")
      */
     public function del(Request $request,NormalizerInterface $Normalizer,$id_competition)
     {
@@ -66,7 +87,7 @@ class CompetitionJson extends AbstractController
         return new Response("Deleted".json_encode($jsonContent));
     }
     /**
-     * @Route("/comp/{id}", name="quf")
+     * @Route("/competition/{id}", name="qusgrf")
      */
     public function find(Request $request,NormalizerInterface $Normalizer,$id)
     {
@@ -97,4 +118,6 @@ class CompetitionJson extends AbstractController
         $jsonContent = $Normalizer->normalize($comp,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent));
     }
+
+
 }

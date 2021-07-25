@@ -57,7 +57,7 @@ class ProduitJson extends AbstractController
         return new Response(json_encode($jsonContent));
     }
     /**
-     * @Route("/prod/del/{id}", name="prodd")
+     * @Route("/pat/prod/del/{id}", name="prodd")
      */
     public function del(Request $request,NormalizerInterface $Normalizer,$id)
     {

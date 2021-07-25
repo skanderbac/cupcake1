@@ -83,7 +83,7 @@ class Produit
     /**
      * @return int
      */
-    public function getRefPdt(): int
+    public function getRefPdt(): ?int
     {
         return $this->refPdt;
     }

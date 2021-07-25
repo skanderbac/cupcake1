@@ -52,7 +52,7 @@ class Competition
     /**
      * @return int
      */
-    public function getIdCompetition(): int
+    public function getIdCompetition(): ?int
     {
         return $this->idCompetition;
     }
@@ -60,7 +60,7 @@ class Competition
     /**
      * @param int $idCompetition
      */
-    public function setIdCompetition(int $idCompetition): void
+    public function setIdCompetition(?int $idCompetition): void
     {
         $this->idCompetition = $idCompetition;
     }
@@ -108,7 +108,7 @@ class Competition
     /**
      * @param string $nomCompetition
      */
-    public function setNomCompetition(string $nomCompetition): void
+    public function setNomCompetition(?string $nomCompetition): void
     {
         $this->nomCompetition = $nomCompetition;
     }
