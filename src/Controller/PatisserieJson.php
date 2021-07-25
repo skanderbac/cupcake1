@@ -20,8 +20,6 @@ class PatisserieJson extends AbstractController
      */
     public function AfiAction()
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Content-Type: application/json; charset=UTF-8");
         $tasks = $this->getDoctrine()->getManager()->getRepository(Patisserie::class)->findAll();
 
         $serializer = new Serializer([new ObjectNormalizer()]);
@@ -33,11 +31,17 @@ class PatisserieJson extends AbstractController
      */
     public function adAction(Request $request,NormalizerInterface $Normalizer)
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Content-Type: application/json; charset=UTF-8");
-        header("Access-Control-Allow-Methods", "POST,GET,OPTIONS");
-        header("Access-Control-Allow-Headers", "content-type, Authorization");
-        header("Access-Control-Max-Age", "3600");
+        $data = json_decode($request->getContent(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return null;
+        }
+
+        if ($data === null) {
+            return $request;
+        }
+
+        $request->request->replace($data);
 
         $em = $this->getDoctrine()->getManager();
         $rec = new Patisserie();
@@ -45,7 +49,7 @@ class PatisserieJson extends AbstractController
         $rec->setIdutilisateur(5);
         $rec->setEmail($request->get('email'));
         $rec->setAdresse($request->get('adresse'));
-        $rec->setTel($request->get('telephone'));
+        $rec->setTel($request->get('tel'));
         $rec->setTheme($request->get('theme'));
         $rec->setActiver($request->get('activer'));
         $em->persist($rec);
@@ -63,6 +67,7 @@ class PatisserieJson extends AbstractController
         $jsonContent = $Normalizer->normalize($cv,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent));
     }
+
     /**
      * @Route("/pat/del/{id}", name="vd")
      */
@@ -73,17 +78,29 @@ class PatisserieJson extends AbstractController
         $em->remove($comp);
         $em->flush();
         $jsonContent = $Normalizer->normalize($comp,'json',['groups'=>'post:read']);
-        return new Response("Deleted".json_encode($jsonContent));
+        return new Response(json_encode($jsonContent));
     }
+
     /**
-     * @Route("/pat/modify/{id}", name="cvre")
+     * @Route("/pat/update/{id}", name="cvrfe",methods={"GET","POST"})
      */
     public function ModifyAction(Request $request,NormalizerInterface $Normalizer,$id)
     {
+        $data = json_decode($request->getContent(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return null;
+        }
+
+        if ($data === null) {
+            return $request;
+        }
+
+        $request->request->replace($data);
+
         $em = $this->getDoctrine()->getManager();
         $rec = $em->getRepository(Patisserie::class)->find($id);
         $rec->setNom($request->get('nom'));
-        $rec->setIdutilisateur($request->get('iduser'));
         $rec->setEmail($request->get('email'));
         $rec->setAdresse($request->get('adresse'));
         $rec->setTel($request->get('tel'));

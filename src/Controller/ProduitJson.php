@@ -15,30 +15,42 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProduitJson extends AbstractController
 {
     /**
-     * @Route("/produit", name="prod")
+     * @Route("/pat/prod/{idpatisserie}", name="prod")
      */
-    public function AfiAction()
+    public function AfiAction($idpatisserie)
     {
-        $tasks = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findAll();
+        $tasks = $this->getDoctrine()->getManager()->getRepository(Produit::class)->findBy(array('idpatisserie'=>$idpatisserie));
 
         $serializer = new Serializer([new ObjectNormalizer()]);
         $formatted = $serializer->normalize($tasks);
         return new JsonResponse($formatted);
     }
     /**
-     * @Route("/prod/add", name="prodadd")
+     * @Route("/pat/prod/add", name="prodadhfhfd")
      */
-    public function adAction(Request $request,NormalizerInterface $Normalizer)
+    public function addAction(Request $request,NormalizerInterface $Normalizer)
     {
+        $data = json_decode($request->getContent(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return null;
+        }
+
+        if ($data === null) {
+            return $request;
+        }
+
+        $request->request->replace($data);
+
         $em = $this->getDoctrine()->getManager();
         $rec = new Produit();
         $rec->setDescription($request->get('description'));
-        $rec->setIdpatisserie(4);
+        $rec->setIdpatisserie($request->get('idpatisserie'));
         $rec->setDesignation($request->get('designation'));
         $rec->setImage($request->get('image'));
-        $rec->setNote(4);
+        $rec->setNote($request->get('note'));
         $rec->setPrix($request->get('prix'));
-        $rec->setQteStock($request->get('qte'));
+        $rec->setQteStock($request->get('qteStock'));
         $em->persist($rec);
         $em->flush();
         $jsonContent = $Normalizer->normalize($rec,'json',['groups'=>'post:read']);
