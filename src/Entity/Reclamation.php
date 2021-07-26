@@ -58,6 +58,14 @@ class Reclamation
     private $status;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="reponse", type="string", length=255, nullable=false)
+     * @Groups("post:read")
+     */
+    private $reponse;
+
+    /**
      * @return int
      */
     public function getIdReclamation(): ?int
@@ -135,6 +143,22 @@ class Reclamation
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReponse(): ?string
+    {
+        return $this->reponse;
+    }
+
+    /**
+     * @param string $reponse
+     */
+    public function setReponse(?string $reponse): void
+    {
+        $this->reponse = $reponse;
     }
 
 

@@ -29,6 +29,19 @@ class ReclamationJson extends AbstractController
         $formatted = $serializer->normalize($tasks);
         return new JsonResponse($formatted);
     }
+
+    /**
+     * @Route("/reclamation/{id}", name="resfsfsc")
+     */
+    public function AfffAction($id)
+    {
+        $tasks = $this->getDoctrine()->getManager()->getRepository(Reclamation::class)->findOneBy(array('idReclamation' => $id));
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($tasks);
+        return new JsonResponse($formatted);
+    }
+
     /**
      * @Route("/reclamation/add", name="recadd")
      */
@@ -52,6 +65,7 @@ class ReclamationJson extends AbstractController
         $rec->setImessage($request->get('imessage'));
         $rec->setIdutilisateur(4);
         $rec->setStatus('non traite');
+        $rec->setReponse('');
         $em->persist($rec);
         $em->flush();
         $jsonContent = $Normalizer->normalize($rec,'json',['groups'=>'post:read']);
@@ -68,7 +82,7 @@ class ReclamationJson extends AbstractController
         $em->remove($comp);
         $em->flush();
         $jsonContent = $Normalizer->normalize($comp,'json',['groups'=>'post:read']);
-        return new Response("Deleted Succesfully");
+        return new Response(json_encode($jsonContent));
     }
     /**
      * @Route("/rec/{id}", name="qf")
@@ -108,6 +122,33 @@ class ReclamationJson extends AbstractController
         $serializer = new Serializer([new ObjectNormalizer()]);
         $formatted = $serializer->normalize($tasks);
         return new JsonResponse($formatted);
+    }
+
+
+    /**
+     * @Route("/reclamations/repondre/{id}", name="repondreee",methods={"GET","POST"})
+     */
+    public function repondreeAction(Request $request,NormalizerInterface $Normalizer,$id)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return null;
+        }
+
+        if ($data === null) {
+            return $request;
+        }
+
+        $request->request->replace($data);
+
+        $em = $this->getDoctrine()->getManager();
+        $rec = $em->getRepository(Reclamation::class)->find($id);
+        $rec->setStatus('traite');
+        $rec->setReponse($request->get('reponse'));
+        $em->flush();
+        $jsonContent = $Normalizer->normalize($rec,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent));
     }
 
 }
