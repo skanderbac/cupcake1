@@ -18,13 +18,15 @@ class PatisserieJson extends AbstractController
     /**
      * @Route("/pat", name="res")
      */
-    public function AfiAction()
+    public function AfiAction(NormalizerInterface $Normalizer)
     {
         $tasks = $this->getDoctrine()->getManager()->getRepository(Patisserie::class)->findAll();
 
-        $serializer = new Serializer([new ObjectNormalizer()]);
+        /*$serializer = new Serializer([new ObjectNormalizer()]);
         $formatted = $serializer->normalize($tasks);
-        return new JsonResponse($formatted);
+        return new JsonResponse($formatted);*/
+        $jsonContent = $Normalizer->normalize($tasks,'json',['groups'=>'post:read']);
+        return new JsonResponse($jsonContent);
     }
     /**
      * @Route("/pat/add", name="readd")
@@ -80,7 +82,6 @@ class PatisserieJson extends AbstractController
         $jsonContent = $Normalizer->normalize($comp,'json',['groups'=>'post:read']);
         return new Response(json_encode($jsonContent));
     }
-
     /**
      * @Route("/pat/update/{id}", name="cvrfe",methods={"GET","POST"})
      */

@@ -122,7 +122,7 @@ class Publication
     /**
      * @param string $titre
      */
-    public function setTitre(string $titre): void
+    public function setTitre(?string $titre): void
     {
         $this->titre = $titre;
     }
@@ -138,7 +138,7 @@ class Publication
     /**
      * @param string $texte
      */
-    public function setTexte(string $texte): void
+    public function setTexte(?string $texte): void
     {
         $this->texte = $texte;
     }

@@ -41,41 +41,26 @@ class Reclamation
     private $idutilisateur;
 
     /**
-     * @var int|null
+     * @var string
      *
-     * @ORM\Column(name="idpatisserie", type="integer", nullable=true)
+     * @ORM\Column(name="type", type="string", length=255, nullable=false)
      * @Groups("post:read")
      */
-    private $idpatisserie;
+    private $type;
+
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="visible", type="integer", nullable=false)
+     * @ORM\Column(name="status", type="string", length=255, nullable=false)
      * @Groups("post:read")
      */
-    private $visible;
+    private $status;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="status", type="integer", nullable=false)
-     * @Groups("post:read")
+     * @return int
      */
-    private $status = '0';
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="reponse", type="string", length=255, nullable=true)
-     * @Groups("post:read")
-     */
-    private $reponse;
-
-    /**
-     * @return int|null
-     */
-    public function getIdReclamation(): int
+    public function getIdReclamation(): ?int
     {
         return $this->idReclamation;
     }
@@ -83,7 +68,7 @@ class Reclamation
     /**
      * @param int $idReclamation
      */
-    public function setIdReclamation(int $idReclamation): void
+    public function setIdReclamation(?int $idReclamation): void
     {
         $this->idReclamation = $idReclamation;
     }
@@ -121,68 +106,39 @@ class Reclamation
     }
 
     /**
-     * @return int|null
+     * @return string
      */
-    public function getIdpatisserie(): ?int
+    public function getType(): string
     {
-        return $this->idpatisserie;
+        return $this->type;
     }
 
     /**
-     * @param int|null $idpatisserie
+     * @param string $type
      */
-    public function setIdpatisserie(?int $idpatisserie): void
+    public function setType(string $type): void
     {
-        $this->idpatisserie = $idpatisserie;
+        $this->type = $type;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getVisible(): int
-    {
-        return $this->visible;
-    }
-
-    /**
-     * @param int $visible
-     */
-    public function setVisible(int $visible): void
-    {
-        $this->visible = $visible;
-    }
-
-    /**
-     * @return int
-     */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
     /**
-     * @param int $status
+     * @param string $status
      */
-    public function setStatus($status): void
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getReponse(): ?string
-    {
-        return $this->reponse;
-    }
 
-    /**
-     * @param string|null $reponse
-     */
-    public function setReponse(?string $reponse): void
-    {
-        $this->reponse = $reponse;
-    }
+
 
 
 }
