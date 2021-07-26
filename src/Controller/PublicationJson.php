@@ -29,7 +29,7 @@ class PublicationJson extends AbstractController
     /**
      * @Route("/publication/add", name="pubaddd")
      */
-    public function adAction(Request $request,NormalizerInterface $Normalizer,\Swift_Mailer $mailer)
+    public function adAction(Request $request,NormalizerInterface $Normalizer)
     {
         $data = json_decode($request->getContent(), true);
 
@@ -51,23 +51,6 @@ class PublicationJson extends AbstractController
         $rec->setTitre($request->get('titre'));
         $em->persist($rec);
         $em->flush();
-
-
-
-        $mail = (new \Swift_Message('Thanks for proposing this project and choosing our services'))
-            // On attribue l'expéditeur
-            ->setFrom('service.provider.time@gmail.com')
-            // On attribue le destinataire
-            ->setTo('marwentlili01@gmail.com')
-            // On crée le texte avec la vue
-            ->setBody(
-                $this->renderView(
-                    'emails/thanks.html.twig'
-                ),
-                'text/html'
-            );
-        $mailer->send($mail);
-
 
         $this->addFlash("success", "Inscription réussie !");
 
