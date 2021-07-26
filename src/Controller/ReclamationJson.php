@@ -151,4 +151,20 @@ class ReclamationJson extends AbstractController
         return new Response(json_encode($jsonContent));
     }
 
+    /**
+     * @Route("/reclamationCalcul/{type}", name="sfsff")
+     */
+    public function fqqffAction($type)
+    {
+        $tasks = $this->getDoctrine()->getManager()->getRepository(Reclamation::class)->findBy(array('type'=>$type));
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($tasks);
+        $total=0;
+        foreach ($tasks as $row){
+            $total ++;
+        }
+        return new JsonResponse($total);
+    }
+
 }

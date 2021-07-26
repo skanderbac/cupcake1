@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -64,6 +66,12 @@ class Reclamation
      * @Groups("post:read")
      */
     private $reponse;
+
+
+    public function __construct()
+    {
+        $this->avis = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -160,6 +168,7 @@ class Reclamation
     {
         $this->reponse = $reponse;
     }
+
 
 
 

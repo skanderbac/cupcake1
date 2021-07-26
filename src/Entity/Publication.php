@@ -31,13 +31,6 @@ class Publication
      */
     private $idcompetition;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="idutilisateur", type="integer", nullable=true)
-     * @Groups("post:read")
-     */
-    private $idutilisateur;
 
     /**
      * @var string
@@ -95,21 +88,6 @@ class Publication
         $this->idcompetition = $idcompetition;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getIdutilisateur(): ?int
-    {
-        return $this->idutilisateur;
-    }
-
-    /**
-     * @param int|null $idutilisateur
-     */
-    public function setIdutilisateur(?int $idutilisateur): void
-    {
-        $this->idutilisateur = $idutilisateur;
-    }
 
     /**
      * @return string
